@@ -4,7 +4,7 @@ export default function UserSelector({
   selectedUser,
   onChange,
 }: {
-  selectedUser: number;
+  selectedUser: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }) {
   return (
