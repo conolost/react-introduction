@@ -12,25 +12,30 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchPost = async () => {
+    const fetchToDos = async () => {
       setIsLoading(true);
       let result = await getApiData();
       setUsersData(result);
       setIsLoading(false);
     };
-    fetchPost();
+    fetchToDos();
   }, []);
 
   return (
     <div className='App'>
-      <h1>{isLoading ? <>LOading...</> : <>LOaded</>}</h1>
-      <SortBy sortedBy={sortedBy} onChange={(e) => setSortedBy(e.target.value)} />
-      <UserSelctr
-        usersData={usersData}
-        selectedUser={selectedUser}
-        onChange={(e) => setSelectedUser(e.target.value)}
-      ></UserSelctr>
-      <ToDoLst usersData={usersData} selectedUser={selectedUser} sortedBy={sortedBy}></ToDoLst>
+      {isLoading ? (
+        <div className='loader'></div>
+      ) : (
+        <>
+          <SortBy sortedBy={sortedBy} onChange={(e) => setSortedBy(e.target.value)} />
+          <UserSelctr
+            usersData={usersData}
+            selectedUser={selectedUser}
+            onChange={(e) => setSelectedUser(e.target.value)}
+          ></UserSelctr>
+          <ToDoLst usersData={usersData} selectedUser={selectedUser} sortedBy={sortedBy}></ToDoLst>
+        </>
+      )}
     </div>
   );
 }

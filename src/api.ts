@@ -1,5 +1,3 @@
-// import usersData from './data/todos.json';
-
 export default async function getApiData() {
   try {
     const response = await fetch('https://jsonplaceholder.typicode.com/todos');
