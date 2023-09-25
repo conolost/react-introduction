@@ -1,9 +1,17 @@
 import { getUserToDoList } from '../api';
 
-export default function UserToDoList({ selectedUser, sortedBy }: { selectedUser: string; sortedBy: string }) {
+export default function UserToDoList({
+  usersData,
+  selectedUser,
+  sortedBy,
+}: {
+  usersData: any;
+  selectedUser: string;
+  sortedBy: string;
+}) {
   return (
     <>
-      {getUserToDoList(selectedUser, sortedBy)!.map((userToDo) => {
+      {getUserToDoList(usersData, selectedUser, sortedBy)!.map((userToDo) => {
         return (
           <div key={userToDo.id} className='todo'>
             <p>Title: {userToDo.title}</p>

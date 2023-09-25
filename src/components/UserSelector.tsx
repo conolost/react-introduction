@@ -1,9 +1,11 @@
-import { getUniqUsersIds } from "../api";
+import { getUniqUsersIds } from '../api';
 
 export default function UserSelector({
+  usersData,
   selectedUser,
   onChange,
 }: {
+  usersData: any;
   selectedUser: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }) {
@@ -11,7 +13,7 @@ export default function UserSelector({
     <div>
       <label>Pick a user: </label>
       <select value={selectedUser} onChange={onChange}>
-        {getUniqUsersIds().map((userId) => {
+        {getUniqUsersIds(usersData).map((userId) => {
           return (
             <option key={userId} value={userId}>
               User {userId}

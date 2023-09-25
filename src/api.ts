@@ -1,19 +1,29 @@
-import usersData from './data/todos.json';
+// import usersData from './data/todos.json';
 
-export function getUniqUsersIds() {
+export default async function getApiData() {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/todos');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Response is not OK: ' + error);
+  }
+}
+
+export function getUniqUsersIds(usersData: any[]) {
   return [...new Set(usersData.map((userData) => userData.userId))];
 }
 
-export function getUserToDoList(selectedUser: string | number, sortedBy: string) {
-  return handleToDoList(sortedBy).filter((userData) => userData.userId === +selectedUser);
+export function getUserToDoList(usersData: any[], selectedUser: string | number, sortedBy: string) {
+  return handleToDoList(usersData, sortedBy).filter((userData) => userData.userId === +selectedUser);
 }
 
-function handleToDoList(by: string) {
+function handleToDoList(usersData: any[], by: string) {
   switch (by) {
     case 'ascending':
-      return usersData.sort((a, b) => a.title.localeCompare(b.title));
+      return usersData.slice().sort((a, b) => a.title.localeCompare(b.title));
     case 'descending':
-      return usersData.sort((a, b) => b.title.localeCompare(a.title));
+      return usersData.slice().sort((a, b) => b.title.localeCompare(a.title));
   }
 
   return usersData;
