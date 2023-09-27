@@ -1,11 +1,11 @@
-import { getUserToDoList } from '../api';
+import { getUserToDoList, ToDo } from '../api';
 
-export default function UserToDoList({
+export function UserToDoList({
   usersData,
   selectedUser,
   sortedBy,
 }: {
-  usersData: any;
+  usersData: ToDo[];
   selectedUser: string;
   sortedBy: string;
 }) {

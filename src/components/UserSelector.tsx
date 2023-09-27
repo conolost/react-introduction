@@ -1,11 +1,11 @@
-import { getUniqUsersIds } from '../api';
+import { getUniqUsersIds, ToDo } from '../api';
 
-export default function UserSelector({
+export function UserSelector({
   usersData,
   selectedUser,
   onChange,
 }: {
-  usersData: any;
+  usersData: ToDo[];
   selectedUser: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }) {

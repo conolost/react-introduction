@@ -1,24 +1,29 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import SortBy from './components/SortBy';
-import UserSelctr from './components/UserSelector';
-import ToDoLst from './components/ToDoList';
-import getApiData from './api';
+import { SortBy } from './components/SortBy';
+import { UserSelector } from './components/UserSelector';
+import { UserToDoList } from './components/ToDoList';
+import getApiData, { ToDo } from './api';
 
 function App() {
   const [selectedUser, setSelectedUser] = useState('1');
   const [sortedBy, setSortedBy] = useState('default');
-  const [usersData, setUsersData] = useState([]);
+  const [usersData, setUsersData] = useState<ToDo[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     const fetchToDos = async () => {
       setIsLoading(true);
-      let result = await getApiData();
+      let result = await getApiData(abortController.signal);
       setUsersData(result);
       setIsLoading(false);
     };
     fetchToDos();
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   return (
@@ -28,12 +33,12 @@ function App() {
       ) : (
         <>
           <SortBy sortedBy={sortedBy} onChange={(e) => setSortedBy(e.target.value)} />
-          <UserSelctr
+          <UserSelector
             usersData={usersData}
             selectedUser={selectedUser}
             onChange={(e) => setSelectedUser(e.target.value)}
-          ></UserSelctr>
-          <ToDoLst usersData={usersData} selectedUser={selectedUser} sortedBy={sortedBy}></ToDoLst>
+          ></UserSelector>
+          <UserToDoList usersData={usersData} selectedUser={selectedUser} sortedBy={sortedBy}></UserToDoList>
         </>
       )}
     </div>
