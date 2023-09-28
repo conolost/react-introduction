@@ -1,3 +1,4 @@
+export const url = new URL('https://jsonplaceholder.typicode.com/todos');
 export type ToDo = {
   userId: number;
   title: string;
@@ -5,9 +6,9 @@ export type ToDo = {
   completed: boolean;
 };
 
-export default async function getApiData(signal: AbortSignal): Promise<ToDo[]> {
+export async function getApiData(signal: AbortSignal): Promise<ToDo[]> {
   try {
-    const response = await fetch('https://jsonplaceholder.typicode.com/todos', { signal });
+    const response = await fetch(url, { signal });
     const data = await response.json();
     return data;
   } catch (error) {
@@ -21,17 +22,22 @@ export function getUniqUsersIds(usersData: ToDo[]) {
   return [...new Set(usersData.map((userData) => userData.userId))];
 }
 
-export function getUserToDoList(usersData: ToDo[], selectedUser: string | number, sortedBy: string) {
-  return handleToDoList(usersData, sortedBy).filter((userData) => userData.userId === +selectedUser);
+export function getUserToDoList(usersData: ToDo[], selectedUser: number, sortedBy: string) {
+  if (selectedUser === 0) return handleToDoList(usersData, sortedBy);
+  return handleToDoList(usersData, sortedBy).filter((user) => user.userId === selectedUser);
 }
 
 function handleToDoList(usersData: ToDo[], by: string) {
+  url.searchParams.set('_sort', 'title');
   switch (by) {
     case 'ascending':
-      return usersData.slice().sort((a, b) => a.title.localeCompare(b.title));
-    case 'descending':
-      return usersData.slice().sort((a, b) => b.title.localeCompare(a.title));
-  }
+      url.searchParams.set('_order', 'asc');
+      return usersData;
 
+    case 'descending':
+      url.searchParams.set('_order', 'desc');
+      return usersData;
+  }
+  if (url.searchParams.has('_sort')) url.searchParams.delete('_sort');
   return usersData;
 }

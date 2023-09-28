@@ -6,19 +6,29 @@ export function UserToDoList({
   sortedBy,
 }: {
   usersData: ToDo[];
-  selectedUser: string;
+  selectedUser: number;
   sortedBy: string;
 }) {
   return (
     <>
-      {getUserToDoList(usersData, selectedUser, sortedBy)!.map((userToDo) => {
-        return (
-          <div key={userToDo.id} className='todo'>
-            <p>Title: {userToDo.title}</p>
-            <p>Status: {userToDo.completed ? 'performed' : 'in progress'}</p>
-          </div>
-        );
-      })}
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {getUserToDoList(usersData, selectedUser, sortedBy)!.map((userToDo) => {
+            return (
+              <tr key={userToDo.id}>
+                <td>{userToDo.title}</td>
+                <td>{userToDo.completed ? 'performed' : 'in progress'}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </>
   );
 }

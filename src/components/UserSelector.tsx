@@ -6,16 +6,19 @@ export function UserSelector({
   onChange,
 }: {
   usersData: ToDo[];
-  selectedUser: string;
+  selectedUser: number;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }) {
   return (
     <div>
       <label>Pick a user: </label>
       <select value={selectedUser} onChange={onChange}>
+        <option key={crypto.randomUUID()} value='0'>
+          All users
+        </option>
         {getUniqUsersIds(usersData).map((userId) => {
           return (
-            <option key={userId} value={userId}>
+            <option key={self.crypto.randomUUID()} value={userId}>
               User {userId}
             </option>
           );

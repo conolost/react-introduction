@@ -3,12 +3,12 @@ import './App.css';
 import { SortBy } from './components/SortBy';
 import { UserSelector } from './components/UserSelector';
 import { UserToDoList } from './components/ToDoList';
-import getApiData, { ToDo } from './api';
+import { getApiData, ToDo } from './api';
 
 function App() {
-  const [selectedUser, setSelectedUser] = useState('1');
-  const [sortedBy, setSortedBy] = useState('default');
   const [usersData, setUsersData] = useState<ToDo[]>([]);
+  const [sortedBy, setSortedBy] = useState('default');
+  const [selectedUser, setSelectedUser] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -16,6 +16,7 @@ function App() {
 
     const fetchToDos = async () => {
       setIsLoading(true);
+      console.log(isLoading);
       let result = await getApiData(abortController.signal);
       setUsersData(result);
       setIsLoading(false);
@@ -24,7 +25,7 @@ function App() {
     return () => {
       abortController.abort();
     };
-  }, []);
+  }, [sortedBy]);
 
   return (
     <div className='App'>
@@ -36,7 +37,7 @@ function App() {
           <UserSelector
             usersData={usersData}
             selectedUser={selectedUser}
-            onChange={(e) => setSelectedUser(e.target.value)}
+            onChange={(e) => setSelectedUser(+e.target.value)}
           ></UserSelector>
           <UserToDoList usersData={usersData} selectedUser={selectedUser} sortedBy={sortedBy}></UserToDoList>
         </>
