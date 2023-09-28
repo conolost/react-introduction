@@ -1,11 +1,11 @@
-import { getUniqUsersIds, ToDo } from '../api';
+import { User } from '../api/users';
 
 export function UserSelector({
-  usersData,
+  users,
   selectedUser,
   onChange,
 }: {
-  usersData: ToDo[];
+  users: User[];
   selectedUser: number;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }) {
@@ -16,13 +16,11 @@ export function UserSelector({
         <option key={crypto.randomUUID()} value='0'>
           All users
         </option>
-        {getUniqUsersIds(usersData).map((userId) => {
-          return (
-            <option key={self.crypto.randomUUID()} value={userId}>
-              User {userId}
-            </option>
-          );
-        })}
+        {users.map(({ id, name }) => (
+          <option key={self.crypto.randomUUID()} value={id}>
+            {name}
+          </option>
+        ))}
       </select>
     </div>
   );

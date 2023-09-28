@@ -9,9 +9,11 @@ export function SortBy({
     <div>
       <label htmlFor=''>Sorting: </label>
       <select value={sortedBy} onChange={onChange}>
-        <option value='default'>Default</option>
-        <option value='ascending'>Title A-Z</option>
-        <option value='descending'>Title Z-A</option>
+        <option value='' selected>
+          Default
+        </option>
+        <option value='asc'>Title A-Z</option>
+        <option value='desc'>Title Z-A</option>
       </select>
     </div>
   );
