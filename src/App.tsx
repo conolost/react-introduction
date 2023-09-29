@@ -16,7 +16,6 @@ function App() {
 
     const fetchToDos = async () => {
       setIsLoading(true);
-      console.log(isLoading);
       let result = await getApiData(abortController.signal);
       setUsersData(result);
       setIsLoading(false);
@@ -38,8 +37,8 @@ function App() {
             usersData={usersData}
             selectedUser={selectedUser}
             onChange={(e) => setSelectedUser(+e.target.value)}
-          ></UserSelector>
-          <UserToDoList usersData={usersData} selectedUser={selectedUser} sortedBy={sortedBy}></UserToDoList>
+          />
+          <UserToDoList usersData={usersData} selectedUser={selectedUser} sortedBy={sortedBy} />
         </>
       )}
     </div>
