@@ -1,24 +1,27 @@
-import { getUniqUsersIds } from "../api";
+import { User } from '../api/users';
 
-export default function UserSelector({
+export function UserSelector({
+  users,
   selectedUser,
   onChange,
 }: {
-  selectedUser: string;
+  users: User[];
+  selectedUser: number;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }) {
   return (
     <div>
-      <label>Pick a user: </label>
-      <select value={selectedUser} onChange={onChange}>
-        {getUniqUsersIds().map((userId) => {
-          return (
-            <option key={userId} value={userId}>
-              User {userId}
+      <label>
+        Pick a user:
+        <select value={selectedUser} onChange={onChange}>
+          <option value='0'>All users</option>
+          {users.map(({ id, name }) => (
+            <option value={id} key={id}>
+              {name}
             </option>
-          );
-        })}
-      </select>
+          ))}
+        </select>
+      </label>
     </div>
   );
 }
