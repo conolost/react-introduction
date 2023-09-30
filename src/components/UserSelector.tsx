@@ -14,9 +14,7 @@ export function UserSelector({
       <label>
         Pick a user:
         <select value={selectedUser} onChange={onChange}>
-          <option value='0' key={crypto.randomUUID()}>
-            All users
-          </option>
+          <option value='0'>All users</option>
           {users.map(({ id, name }) => (
             <option value={id} key={id}>
               {name}

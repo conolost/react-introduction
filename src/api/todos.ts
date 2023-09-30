@@ -5,22 +5,20 @@ export type ToDo = {
   completed: boolean;
 };
 const SORTING_TODO_BY = 'title';
-export const toDosUrl = new URL('https://jsonplaceholder.typicode.com/todos');
 
 export async function fetchToDos(
   { sortingOrder, selectedUserId }: { sortingOrder: string; selectedUserId: number },
   signal: AbortSignal
 ): Promise<ToDo[]> {
+  const toDosUrl = new URL('https://jsonplaceholder.typicode.com/todos');
   const params = toDosUrl.searchParams;
 
   if (sortingOrder) {
     params.set('_sort', SORTING_TODO_BY);
     params.set('_order', sortingOrder);
-  } else params.delete('_sort');
+  }
 
-  if (selectedUserId) {
-    params.set('userId', selectedUserId.toString());
-  } else params.delete('userId');
+  if (selectedUserId) params.set('userId', selectedUserId.toString());
 
   try {
     const response = await fetch(toDosUrl, { signal });
