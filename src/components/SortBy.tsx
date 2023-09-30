@@ -1,18 +1,20 @@
 export function SortBy({
-  sortedBy,
+  sortingOrder,
   onChange,
 }: {
-  sortedBy: string;
+  sortingOrder: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }) {
   return (
     <div>
-      <label htmlFor=''>Sorting: </label>
-      <select value={sortedBy} onChange={onChange}>
-        <option value='default'>Default</option>
-        <option value='ascending'>Title A-Z</option>
-        <option value='descending'>Title Z-A</option>
-      </select>
+      <label>
+        Sorting:
+        <select value={sortingOrder} onChange={onChange}>
+          <option value=''>Default</option>
+          <option value='asc'>Title A-Z</option>
+          <option value='desc'>Title Z-A</option>
+        </select>
+      </label>
     </div>
   );
 }

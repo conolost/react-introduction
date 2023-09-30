@@ -1,34 +1,22 @@
-import { getUserToDoList, ToDo } from '../api';
+import { ToDo } from '../api/todos';
 
-export function UserToDoList({
-  usersData,
-  selectedUser,
-  sortedBy,
-}: {
-  usersData: ToDo[];
-  selectedUser: number;
-  sortedBy: string;
-}) {
+export function UserToDoList({ toDos }: { toDos: ToDo[] }) {
   return (
-    <>
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Status</th>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {toDos.map(({ id, title, completed }) => (
+          <tr key={id}>
+            <td>{title}</td>
+            <td>{completed ? 'performed :D' : 'in progress ...'}</td>
           </tr>
-        </thead>
-        <tbody>
-          {getUserToDoList(usersData, selectedUser, sortedBy)!.map((userToDo) => {
-            return (
-              <tr key={userToDo.id}>
-                <td>{userToDo.title}</td>
-                <td>{userToDo.completed ? 'performed' : 'in progress'}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </>
+        ))}
+      </tbody>
+    </table>
   );
 }

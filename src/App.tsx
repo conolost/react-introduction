@@ -3,43 +3,59 @@ import './App.css';
 import { SortBy } from './components/SortBy';
 import { UserSelector } from './components/UserSelector';
 import { UserToDoList } from './components/ToDoList';
-import { getApiData, ToDo } from './api';
+import { fetchToDos, ToDo } from './api/todos';
+import { fetchUsers, User } from './api/users';
 
 function App() {
-  const [usersData, setUsersData] = useState<ToDo[]>([]);
-  const [sortedBy, setSortedBy] = useState('default');
-  const [selectedUser, setSelectedUser] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isToDosLoading, setIsToDosLoading] = useState(false);
+  const [isUsersLoading, setIsUsersLoading] = useState(false);
+  const [users, setUsers] = useState<User[]>([]);
+  const [toDos, setToDos] = useState<ToDo[]>([]);
+  const [sortingOrder, setSortingOrder] = useState<string>('');
+  const [selectedUserId, setSelectedUserId] = useState<User['id']>(0);
 
+  //getting users
   useEffect(() => {
     const abortController = new AbortController();
-
-    const fetchToDos = async () => {
-      setIsLoading(true);
-      console.log(isLoading);
-      let result = await getApiData(abortController.signal);
-      setUsersData(result);
-      setIsLoading(false);
-    };
-    fetchToDos();
+    (async () => {
+      setIsUsersLoading(true);
+      let result = await fetchUsers(abortController.signal);
+      setUsers(result);
+      setIsUsersLoading(false);
+    })();
     return () => {
       abortController.abort();
     };
-  }, [sortedBy]);
+  }, []);
+
+  //getting todos
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    (async () => {
+      setIsToDosLoading(true);
+      let result = await fetchToDos({ sortingOrder, selectedUserId }, abortController.signal);
+      setToDos(result);
+      setIsToDosLoading(false);
+    })();
+    return () => {
+      abortController.abort();
+    };
+  }, [sortingOrder, selectedUserId]);
 
   return (
     <div className='App'>
-      {isLoading ? (
+      {isToDosLoading || isUsersLoading ? (
         <div className='loader'></div>
       ) : (
         <>
-          <SortBy sortedBy={sortedBy} onChange={(e) => setSortedBy(e.target.value)} />
+          <SortBy sortingOrder={sortingOrder} onChange={(e) => setSortingOrder(e.target.value)} />
           <UserSelector
-            usersData={usersData}
-            selectedUser={selectedUser}
-            onChange={(e) => setSelectedUser(+e.target.value)}
-          ></UserSelector>
-          <UserToDoList usersData={usersData} selectedUser={selectedUser} sortedBy={sortedBy}></UserToDoList>
+            users={users}
+            selectedUser={selectedUserId}
+            onChange={(e) => setSelectedUserId(+e.target.value)}
+          />
+          <UserToDoList toDos={toDos} />
         </>
       )}
     </div>
