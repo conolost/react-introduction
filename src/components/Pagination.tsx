@@ -1,28 +1,36 @@
-export function Pagination() {
+type Props = {
+  currentPage: number;
+  pagesNumber: number;
+  onPageChange: (page: number) => void;
+};
+export function Pagination({ currentPage, pagesNumber, onPageChange }: Props) {
   return (
     <div className='container'>
       <ul className='pagination'>
-        <li>
-          <a href='#'>Prev</a>
-        </li>
-        <li>
-          <a href='#'>1</a>
-        </li>
+        {currentPage > 1 && (
+          <li onClick={() => onPageChange(currentPage - 1)}>
+            <a href='#'>Prev</a>
+          </li>
+        )}
+
+        {/* {currentPage > 2 && (
+          <li>
+            <a href='#'>{currentPage - 1}</a>
+          </li>
+        )} */}
         <li className='active'>
-          <a href='#'>2</a>
+          <a href='#'>{currentPage}</a>
         </li>
-        <li>
-          <a href='#'>3</a>
-        </li>
-        <li>
-          <a href='#'>4</a>
-        </li>
-        <li>
-          <a href='#'>5</a>
-        </li>
-        <li>
-          <a href='#'>Next</a>
-        </li>
+        {/* {currentPage + 1 < pagesNumber && (
+          <li>
+            <a href='#'>{currentPage + 1}</a>
+          </li>
+        )} */}
+        {pagesNumber > currentPage && (
+          <li onClick={() => onPageChange(currentPage + 1)}>
+            <a href='#'>Next</a>
+          </li>
+        )}
       </ul>
     </div>
   );
